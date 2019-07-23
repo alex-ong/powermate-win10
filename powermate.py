@@ -16,15 +16,15 @@ class PowerMateReader(threading.Thread):
     def run(self):   
         api = WinUsbPy()    
         result = api.list_usb_devices(deviceinterface=True, present=True)
-        if result:
-          if api.init_winusb_device(vid, pid):
-            while True:
-                #try:
+        
+        if result:            
+            if api.init_winusb_device(vid, pid):
+                while True:                
                     data = api.read(0x81, 6) #read 6 bytes. 
                     buttonDown = ord(data[0])
                     offset = ord(data[1])
                     self.shiftCache.updatePush(buttonDown == 1)
-                    
+                        
                     if offset > 127:
                         offset = -(256 - offset)
                     
@@ -32,8 +32,11 @@ class PowerMateReader(threading.Thread):
                         self.shiftCache.increment(offset)
                     elif offset < 0:
                         self.shiftCache.decrement(-offset)
-                #except:
-                #    break
+                
+            else:
+                print ("device not found. Here are the available devices:")
+                for p in api.device_paths:                   
+                    print (p[8:25])
                     
 if __name__ == "__main__":
     pmr = PowerMateReader()
