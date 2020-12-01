@@ -20,7 +20,7 @@ This is all done in user-space (rather than kernel space), meaning it is easy to
  * open a cmd console to the unzipped directory 
  * use `python setup.py install` (alternative is `py -2 setup.py install` if running multiple python installs) 
 5. Run it
- * `python powermate.py`
+ * `python powermate.py` or if you have multiple installs, `py -2 powermate.py`
  
 To edit the functionality, have a look at autoshiftcache.py, and implement the `increment`, `decrement` and `tick` functions.
 I have included a stripped down `sendinput.py`, which allows you to send windows keyboard events.
