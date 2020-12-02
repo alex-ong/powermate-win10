@@ -23,7 +23,7 @@ class InputHandler(object):
 
 #Auto shifting handler. changing direction instantly stops.
 SIXTY_HZ = 1.0/60
-SENSITIVITY = 8
+SENSITIVITY = 3
 SHIFT_MAX = 6
 class AutoShiftCache(InputHandler):
     def __init__(self):
@@ -36,26 +36,58 @@ class AutoShiftCache(InputHandler):
         self.rightIsDown = False
         self.lastWheelTime = 0
         self.rawCounter = 0
+    
+    def ReleaseLeft(self):
+        if self.leftIsDown:
+            ReleaseKey(VK_LEFT)            
+        self.leftIsDown = False
+    
+    def ReleaseRight(self):
+        if self.rightIsDown:
+            ReleaseKey(VK_RIGHT)            
+        self.rightIsDown = False  
+
+    def PressLeft(self):
+        if not self.leftIsDown:
+            PressKey(VK_LEFT)            
+        self.leftIsDown = True
+    
+    def PressRight(self):
+        if not self.rightIsDown:
+            PressKey(VK_RIGHT)            
+        self.rightIsDown = True
+        
     def increment(self, amount):
-        if self.counter < 0:
+        if self.counter < 0 or self.rawCounter < 0:
             self.counter = 0
-        else:
-            self.rawCounter += amount
-            while self.rawCounter > SENSITIVITY:
-                self.rawCounter -= SENSITIVITY
-                self.counter += 1
+            self.rawCounter = 0
+            amount = SENSITIVITY
+            
+            self.ReleaseLeft()
+            self.ReleaseRight()
+        
+        self.rawCounter += amount
+        print (self.rawCounter)
+        while self.rawCounter >= SENSITIVITY:
+            self.rawCounter -= SENSITIVITY
+            self.counter += 1
         self.counter = clamp(0,SHIFT_MAX,self.counter)
         
         self.lastMessageTime = self.currentTime
     
-    def decrement(self, amount):
-        if self.counter > 0:
+    def decrement(self, amount):        
+        if self.counter > 0 or self.rawCounter > 0:
             self.counter = 0
-        else:
-            self.rawCounter -= amount
-            while self.rawCounter < -SENSITIVITY:
-                self.rawCounter += SENSITIVITY
-                self.counter -= 1
+            self.rawCounter = 0
+            amount = SENSITIVITY
+            self.ReleaseLeft()
+            self.ReleaseRight()
+                    
+        self.rawCounter -= amount
+        print (self.rawCounter)
+        while self.rawCounter <= -SENSITIVITY:
+            self.rawCounter += SENSITIVITY
+            self.counter -= 1
                 
         self.counter = clamp(-SHIFT_MAX,0,self.counter)
         self.lastMessageTime = self.currentTime
@@ -68,14 +100,12 @@ class AutoShiftCache(InputHandler):
                 ReleaseKey(VK_LEFT)
             if eventDelta >= SIXTY_HZ:            
                 if self.rightIsDown:
-                    print("releaseRight")
-                    ReleaseKey(VK_RIGHT)    
-                    self.rightIsDown = False
+                    #print("releaseRight")
+                    self.ReleaseRight()
                     self.counter -= 1
                 else: #right isnt down.
-                    PressKey(VK_RIGHT)                    
-                    print("PressRight")
-                    self.rightIsDown = True
+                    self.PressRight()
+                    print("PressRight")                    
         
                 self.lastWheelTime = timestamp
         elif self.counter < 0:
@@ -83,23 +113,21 @@ class AutoShiftCache(InputHandler):
                 ReleaseKey(VK_RIGHT)
             if eventDelta >= SIXTY_HZ:            
                 if self.leftIsDown:
-                    print("releaseLeft")
-                    ReleaseKey(VK_LEFT)    
-                    self.leftIsDown = False
+                    #print("releaseLeft")
+                    self.ReleaseLeft()                     
                     self.counter += 1
                 else: #right isnt down.
-                    PressKey(VK_LEFT)                   
+                    self.PressLeft()                  
                     print("PressLeft")
-                    self.leftIsDown = True
         
                 self.lastWheelTime = timestamp
                 
         else: # self.counter == 0:
             if self.rightIsDown:
-                ReleaseKey(VK_RIGHT)
+                self.ReleaseRight()
                 self.lastWheelTime = timestamp
             if self.leftIsDown:
-                ReleaseKey(VK_LEFT)
+                self.ReleaseLeft()
                 self.lastWheelTime = timestamp
                 
         self.currentTime = timestamp
