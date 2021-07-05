@@ -24,3 +24,21 @@ This is all done in user-space (rather than kernel space), meaning it is easy to
  
 To edit the functionality, have a look at autoshiftcache.py, and implement the `increment`, `decrement` and `tick` functions.
 I have included a stripped down `sendinput.py`, which allows you to send windows keyboard events.
+
+
+# Uninstalling / Reverting (oh no, it doesnt work :( )
+* Open Device manager
+* Select Griffin power mate
+* Update driver
+* Choose from drivers
+* Try each of the different drivers (the one that worked for me wasn't called Griffin Powermate, it was called "USB Input Device")
+* ![image](https://user-images.githubusercontent.com/6406312/124419461-e1ef6300-dda0-11eb-935f-0237e921f3ce.png)
+* Open Griffin powermate official software again, it should work with one of the drivers
+
+# Other projects that work better:
+These projects are also in python2, and have been confirmed to work on other people's systems:
+ * todo; but there was one!
+
+
+
+
