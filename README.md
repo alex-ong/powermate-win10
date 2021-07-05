@@ -44,9 +44,13 @@ These projects are also in python2, and have been confirmed to work on other peo
 It uses the **default** powermate driver; therefore not needing WinUSB override.
  * https://github.com/crash7/griffin-powermate
    * Python 2.7.9+
-   * `pip install griffin_powermate`
-   * `pip install pywinusb`
-   * Follow instructions on the site above.
+
+| Commands to run                              | python2 installed             | python2 and python3 installed          |
+|----------------------------------------------|-------------------------------|----------------------------------------|
+| Install pywinusb                             | pip install pywinusb          | py -2 -m pip install pywinusb          |
+| Install griffin_powermate                    | pip install griffin_powermate | py -2 -m pip install griffin_powermate |
+| Run test file (you need to write one first!) | python test.py                | py -2 test.py                          |
+   
 
 
 
