@@ -1,5 +1,7 @@
 # Griffin PowerMate for Windows 10
 
+**Note: Please try the project at the [bottom](#other-projects) first! It doesnt require re-installing the Driver with WinUSB**
+
 This repository is a simple way to reprogram the Griffin powermate, that works in windows 10.
 We first override the Griffin powermate driver with WinUSB, which is a generic user-space driver. 
 
@@ -35,9 +37,18 @@ I have included a stripped down `sendinput.py`, which allows you to send windows
 * ![image](https://user-images.githubusercontent.com/6406312/124419461-e1ef6300-dda0-11eb-935f-0237e921f3ce.png)
 * Open Griffin powermate official software again, it should work with one of the drivers
 
-# Other projects that work better:
+
+
+### Other projects 
 These projects are also in python2, and have been confirmed to work on other people's systems:
- * todo; but there was one!
+It uses the **default** powermate driver; therefore not needing WinUSB override.
+ * https://github.com/crash7/griffin-powermate
+   * Python 2.7.9+
+   * `pip install griffin_powermate`
+   * `pip install pywinusb`
+   * Follow instructions on the site above.
+
+
 
 
 
